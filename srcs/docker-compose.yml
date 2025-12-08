@@ -1,0 +1,54 @@
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: ./Nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    restart: always
+
+  wordpress:
+    build:
+      context: ./Wordpress
+      dockerfile: Dockerfile
+    container_name: wordpress
+    environment:
+      - WORDPRESS_DB_HOST=mariadb
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
+      - WORDPRESS_DB_NAME=wordpress
+    depends_on:
+      - mariadb
+    ports:
+      - "9000:9000"
+    networks:
+      - inception
+    restart: always
+
+  mariadb:
+    build:
+      context: ./Mariadb
+      dockerfile: Dockerfile
+    container_name: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=wordpress
+      - MYSQL_PASSWORD=wordpress
+    ports:
+      - "3306:3306"
+    networks:
+      - inception
+    restart: always
+
+networks:
+  inception:
+    driver: bridge
