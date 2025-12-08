@@ -7,8 +7,10 @@ MYSQL_USER=${MYSQL_USER:-wordpress}
 MYSQL_PASSWORD=${MYSQL_PASSWORD:-wordpress}
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-  echo "Initializing MariaDB data directory"
-  mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+  mkdir -p /var/lib/mysql
+  chown -R mysql:mysql /var/lib/mysql
+  echo "Running mariadbd --initialize..."
+  mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
 fi
 
 /usr/bin/mysqld --user=mysql --datadir=/var/lib/mysql --skip-networking --socket=/run/mysqld/mysqld.sock &
@@ -31,4 +33,5 @@ EOSQL
 
 mysqladmin --socket=/run/mysqld/mysqld.sock shutdown
 
-exec /usr/bin/mysqld --user=mysql --datadir=/var/lib/mysql --bind-address=0.0.0.0
+echo "Starting MariaDB server"
+exec mysqld --user=mysql --datadir=/var/lib/mysql

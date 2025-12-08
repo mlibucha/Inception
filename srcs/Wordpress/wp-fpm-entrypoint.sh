@@ -14,6 +14,10 @@ WP_PATH=${WP_PATH:-/var/www/html}
 mkdir -p "$WP_PATH"
 chown -R www-data:www-data "$WP_PATH"
 
+# Ensure WP-CLI cache directory exists and writable
+mkdir -p /var/www/.wp-cli/cache
+chown -R www-data:www-data /var/www/.wp-cli
+
 
 if [ ! -f "$WP_PATH/wp-settings.php" ]; then
   echo "Downloading WordPress to $WP_PATH..."

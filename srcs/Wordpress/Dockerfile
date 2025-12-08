@@ -57,6 +57,7 @@ RUN { \
     echo "clear_env = no"; \
     echo "php_admin_value[error_log] = /proc/self/fd/2"; \
     echo "php_admin_flag[log_errors] = on"; \
+    echo "php_admin_value[memory_limit] = 256M"; \
     } > /usr/local/etc/php-fpm.d/www.conf
 
 RUN chown -R www-data:www-data /var/www/html
