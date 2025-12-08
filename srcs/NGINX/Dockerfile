@@ -1,6 +1,6 @@
 
 
-FROM nginx:latest
+FROM nginx:alpine
 
 
 
@@ -17,7 +17,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 
 COPY ssl/ /etc/nginx/ssl/
-RUN chmod +x /entrypoint.sh
+COPY nginex-entrypoint.sh /nginx-entrypoint.sh
+RUN chmod +x /nginx-entrypoint.sh
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD curl -f http://localhost/ || exit 1

@@ -17,13 +17,13 @@ chown -R www-data:www-data "$WP_PATH"
 
 if [ ! -f "$WP_PATH/wp-settings.php" ]; then
   echo "Downloading WordPress to $WP_PATH..."
-  su-exec www-data wp core download --path="$WP_PATH" --allow-root || wp core download --path="$WP_PATH" --allow-root
+  gosu www-data wp core download --path="$WP_PATH" --allow-root || wp core download --path="$WP_PATH" --allow-root
 fi
 
 
 if [ ! -f "$WP_PATH/wp-config.php" ]; then
   echo "Generating wp-config.php..."
-  su-exec www-data wp config create \
+  gosu www-data wp config create \
     --path="$WP_PATH" \
     --dbname="$WORDPRESS_DB_NAME" \
     --dbuser="$WORDPRESS_DB_USER" \
@@ -40,9 +40,9 @@ fi
 
 
 if [ -n "$WORDPRESS_URL" ] && [ -n "$WORDPRESS_TITLE" ] && [ -n "$WORDPRESS_ADMIN_USER" ] && [ -n "$WORDPRESS_ADMIN_PASSWORD" ] && [ -n "$WORDPRESS_ADMIN_EMAIL" ]; then
-  if ! su-exec www-data wp core is-installed --path="$WP_PATH" --allow-root >/dev/null 2>&1; then
+  if ! gosu www-data wp core is-installed --path="$WP_PATH" --allow-root >/dev/null 2>&1; then
     echo "Installing WordPress site..."
-    su-exec www-data wp core install \
+    gosu www-data wp core install \
       --path="$WP_PATH" \
       --url="$WORDPRESS_URL" \
       --title="$WORDPRESS_TITLE" \

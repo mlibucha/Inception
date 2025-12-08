@@ -13,9 +13,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     mariadb-client \
     libicu-dev \
     libonig-dev \
-    shadow \
+    gosu \
     bash \
-    sh -c 'echo -e "y"' \
+   # sh -c 'echo -e "y"' \
     && rm -rf /var/lib/apt/lists/* 
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
@@ -59,9 +59,7 @@ RUN { \
     echo "php_admin_flag[log_errors] = on"; \
     } > /usr/local/etc/php-fpm.d/www.conf
 
-RUN addgroup -g 82 -S www-data || true \
-    && adduser -S -D -H -u 82 -G www-data www-data || true \
-    && chown -R www-data:www-data /var/www/html
+RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 9000
 
@@ -69,5 +67,4 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD php-fpm -t || exit 1
 
 ENTRYPOINT ["/usr/local/bin/wp-fpm-entrypoint.sh"]
-CMD ["php-fpm", "-F"]
 

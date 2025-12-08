@@ -1,9 +1,9 @@
-version: "3.8"
+
 
 services:
   nginx:
     build:
-      context: ./Nginx
+      context: ./NGINX
       dockerfile: Dockerfile
     container_name: nginx
     ports:
