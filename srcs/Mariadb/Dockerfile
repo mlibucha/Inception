@@ -13,5 +13,5 @@ RUN chmod +x /mariadb-entrypoint.sh
 EXPOSE 3306
 CMD ["/mariadb-entrypoint.sh"]
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD mysqladmin ping -h localhost -u root --password=$$MYSQL_ROOT_PASSWORD || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=5 \
+    CMD mariadb-admin ping --host=127.0.0.1 --user=root --password=$$MYSQL_ROOT_PASSWORD || exit 1

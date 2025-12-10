@@ -5,13 +5,13 @@ COMPOSE_FILE := docker-compose.yml
 
 .PHONY: all build up down start stop logs ps clean fclean re debug sh wpsh ngsh dbsh
 
-all: build
+all: up
 
 build:
 	$(COMPOSE) -f $(COMPOSE_FILE) build --no-cache
 
 up:
-	$(COMPOSE) -f  $(COMPOSE_FILE) up -d
+	$(COMPOSE) -f $(COMPOSE_FILE) up -d --build
 
 down:
 	$(COMPOSE) -f $(COMPOSE_FILE) down
